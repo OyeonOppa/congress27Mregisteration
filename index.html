@@ -76,14 +76,14 @@
                   <label class="form-label">Thai Organization หน่วยงานไทย</label>
                   <select id="thaiGroup" class="form-control" name="thaiGroup">
                     <option value="">-- เลือกกลุ่ม --</option>
-                    <option value="kmth_sp">กมธ สผ</option>
-                    <option value="kmth_sw">กมธ สว</option>
+                    <option value="kmth_sp">กรรมาธิการ สมาชิกสภาผู้แทนราษฎร</option>
+                    <option value="kmth_sw">กรรมาธิการ สมาชิกวุฒิสภา</option>
                     <option value="thai_other">หน่วยงานอื่น ๆ</option>
                   </select>
                   <div id="thaiGroupDetail" class="mt-2 hidden">
                     <label class="form-label">เลือกหน่วยงานย่อย</label>
                     <select id="thaiSubDetail" class="form-control" name="thaiSubDetail">
-                      <option value="">-- เลือก --</option>
+                      <option value="">-- Select --</option>
                     </select>
                   </div>
                 </div>
@@ -91,12 +91,12 @@
                 <div id="intSub" class="hidden">
                   <label class="form-label">International Organization หน่วยงานต่างประเทศ</label>
                   <select id="intSubDetail" class="form-control" name="intSubDetail">
-                    <option value="">-- เลือก --</option>
+                    <option value="">-- Select --</option>
                   </select>
                 </div>
 
                 <div id="embassySub" class="hidden">
-                  <label class="form-label">สถานทูต / ประเทศ</label>
+                  <label class="form-label">Country</label>
                   <select id="embassySubDetail" class="form-control" name="embassySubDetail">
                     <option value="">-- Select --</option>
                   </select>
@@ -125,11 +125,11 @@
               </div>
               <div class="col-md-3">
                 <label class="form-label">First Name / ชื่อ</label>
-                <input id="firstname" class="form-control" required />
+                <input id="firstname" class="form-control"  required />
               </div>
               <div class="col-md-3">
                 <label class="form-label">Last Name / นามสกุล</label>
-                <input id="lastname" class="form-control" required />
+                <input id="lastname" class="form-control"  required />
               </div>
               <div class="col-md-6">
                 <label class="form-label">Email / อีเมล</label>
@@ -141,11 +141,11 @@
               </div>
               <div class="col-md-6">
                 <label class="form-label">Position / ตำแหน่ง</label>
-                <input id="position" class="form-control" required />
+                <input id="position" class="form-control"  required />
               </div>
               <div class="col-md-6">
                 <label class="form-label">Organization / หน่วยงาน</label>
-                <input id="organization" class="form-control" required />
+                <input id="organization" class="form-control"  required />
               </div>
               <div class="col-md-4">
                 <label class="form-label">Coordinator Name / ชื่อผู้ประสานงาน</label>
@@ -164,26 +164,26 @@
 
           <div id="morningBlock" class="hidden">
             <fieldset>
-              <legend class="h5">งานเช้า (รัฐสภา)</legend>
+              <legend class="h5">Morning Session (Parliament) / งานเช้า (รัฐสภา)</legend>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label">สะดวกเข้าร่วมงานภาคเช้าที่รัฐสภาหรือไม่</label>
+                  <label class="form-label">Will you attend the morning session at Parliament? / สะดวกเข้าร่วมงานภาคเช้าที่รัฐสภาหรือไม่</label>
                   <select id="attendMorning" class="form-control">
-                    <option value="">-- เลือก --</option>
-                    <option value="yes">สะดวก</option>
-                    <option value="no">ไม่สะดวก</option>
+                    <option value="">-- Select / เลือก --</option>
+                    <option value="yes">Yes / สะดวก</option>
+                    <option value="no">No / ไม่สะดวก</option>
                   </select>
                 </div>
                 <div class="col-md-6 hidden" id="parkingBox">
-                  <label class="form-label">ต้องการสำรองที่จอดรถหรือไม่</label>
+                  <label class="form-label">Do you need parking? / ต้องการสำรองที่จอดรถหรือไม่</label>
                   <select id="needParking" class="form-control">
-                    <option value="">-- เลือก --</option>
-                    <option value="no">ไม่สำรอง</option>
-                    <option value="yes">สำรอง</option>
+                    <option value="">-- Select / เลือก --</option>
+                    <option value="no">No / ไม่สำรอง</option>
+                    <option value="yes">Yes / สำรอง</option>
                   </select>
                 </div>
                 <div class="col-md-6 hidden" id="carPlateBox">
-                  <label class="form-label">เลขทะเบียนรถ</label>
+                  <label class="form-label">Car Plate Number / เลขทะเบียนรถ</label>
                   <input id="carPlate" class="form-control" />
                 </div>
               </div>
@@ -192,79 +192,80 @@
 
           <div id="eveningBlock" class="hidden">
             <fieldset>
-              <legend class="h5">งานเย็น (โรงแรม)</legend>
+              <legend class="h5">Evening Session (Hotel) / งานเย็น (โรงแรม)</legend>
               <div class="row g-3">
                 <div class="col-md-6">
-                  <label class="form-label">สะดวกเข้าร่วมงานภาคเย็นที่โรงแรมหรือไม่</label>
+                  <label class="form-label">Will you attend the evening session at hotel? / สะดวกเข้าร่วมงานภาคเย็นที่โรงแรมหรือไม่</label>
                   <select id="attendEvening" class="form-control">
-                    <option value="">-- เลือก --</option>
-                    <option value="yes">สะดวก</option>
-                    <option value="no">ไม่สะดวก</option>
+                    <option value="">-- Select / เลือก --</option>
+                    <option value="yes">Yes / สะดวก</option>
+                    <option value="no">No / ไม่สะดวก</option>
                   </select>
                 </div>
                 <div class="col-md-6 hidden" id="foodBox">
-                  <label class="form-label">ระบุประเภทอาหาร</label>
+                  <label class="form-label">Food Preference / ประเภทอาหาร</label>
                   <select id="foodType" class="form-control">
-                    <option value="">-- เลือก --</option>
-                    <option value="regular">ปกติ</option>
-                    <option value="muslim">มุสลิม</option>
-                    <option value="veg">มังสวิรัติ</option>
-                    <option value="je">เจ</option>
+                    <option value="">-- Select / เลือก --</option>
+                    <option value="regular">Regular / ปกติ</option>
+                    <option value="muslim">Halal / มุสลิม</option>
+                    <option value="veg">Vegetarian / มังสวิรัติ</option>
+                    <option value="je">Vegan / เจ</option>
                   </select>
                 </div>
                 <div class="col-12 hidden" id="allergyBox">
-                  <label class="form-label">การแพ้อาหาร (ถ้ามี)</label>
-                  <input id="foodAllergy" class="form-control" />
+                  <label class="form-label">Food Allergies (if any) / การแพ้อาหาร (ถ้ามี)</label>
+                  <input id="foodAllergy" class="form-control"/>
                 </div>
               </div>
 
               <div id="spouseInvite" class="hidden mt-3">
                 <div class="row g-3">
                   <div class="col-md-6">
-                    <label class="form-label">เข้าร่วมพร้อมคู่สมรสหรือไม่</label>
+                    <label class="form-label">Will you attend with spouse? / เข้าร่วมพร้อมคู่สมรสหรือไม่</label>
                     <select id="withSpouse" class="form-control">
-                      <option value="">-- เลือก --</option>
-                      <option value="no">ไม่ใช่</option>
-                      <option value="yes">ใช่</option>
+                      <option value="">-- Select / เลือก --</option>
+                      <option value="no">No / ไม่ใช่</option>
+                      <option value="yes">Yes / ใช่</option>
                     </select>
                   </div>
                   <div id="spouseFields" class="hidden col-12">
                     <div class="row g-3">
                       <div class="col-md-3">
-                        <label class="form-label">คำนำหน้าคู่สมรส</label>
+                        <label class="form-label">Spouse Title / คำนำหน้าคู่สมรส</label>
                         <select id="spousePrefix" class="form-control">
-                          <option value="">-- เลือก --</option>
-                          <option>นาย</option>
-                          <option>นาง</option>
-                          <option>นางสาว</option>
+                          <option value="">-- Select / เลือก --</option>
+                          <option>Mr. / นาย</option>
+                          <option>Mrs. / นาง</option>
+                          <option>Ms. / นางสาว</option>
                         </select>
                       </div>
                       <div class="col-md-3">
-                        <label class="form-label">ชื่อคู่สมรส</label>
-                        <input id="spouseFirst" class="form-control" />
+                        <label class="form-label">Spouse First Name / ชื่อคู่สมรส</label>
+                        <input id="spouseFirst" class="form-control"/>
                       </div>
                       <div class="col-md-3">
-                        <label class="form-label">นามสกุลคู่สมรส</label>
-                        <input id="spouseLast" class="form-control" />
+                        <label class="form-label">Spouse Last Name / นามสกุลคู่สมรส</label>
+                        <input id="spouseLast" class="form-control"  />
                       </div>
                       <div class="col-md-3">
-                        <label class="form-label">ประเภทอาหารคู่สมรส</label>
+                        <label class="form-label">Spouse Food / อาหารคู่สมรส</label>
                         <select id="spouseFood" class="form-control">
-                          <option value="">-- เลือก --</option>
-                          <option value="regular">ปกติ</option>
-                          <option value="muslim">มุสลิม</option>
-                          <option value="veg">มังสวิรัติ</option>
-                          <option value="je">เจ</option>
+                          <option value="">-- Select / เลือก --</option>
+                          <option value="regular">Regular / ปกติ</option>
+                          <option value="muslim">Halal / มุสลิม</option>
+                          <option value="veg">Vegetarian / มังสวิรัติ</option>
+                          <option value="je">Vegan / เจ</option>
                         </select>
                       </div>
                       <div class="col-12">
-                        <label class="form-label">การแพ้อาหารคู่สมรส (ถ้ามี)</label>
+                        <label class="form-label">Spouse Food Allergies / การแพ้อาหารคู่สมรส (ถ้ามี)</label>
                         <input id="spouseAllergy" class="form-control" />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+
             </fieldset>
           </div>
 
@@ -279,8 +280,8 @@
           </div>
 
           <div class="d-flex align-items-center gap-3 mt-4">
-            <button type="submit" class="btn btn-submit">Register & Get QR Code</button>
-            <div class="muted-small">Scan at event with UID</div>
+            <button type="submit" class="btn btn-submit">Register & Get QR / ลงทะเบียนและรับ QR</button>
+            <div class="muted-small">or scan on-site with UID / หรือสแกนหน้างานด้วย UID</div>
           </div>
 
           <div id="responseMessage" class="alert mt-3 hidden" role="alert"></div>
@@ -301,8 +302,7 @@
         </div>
 
         <div class="qr-box" id="qrArea">
-          <canvas id="qrCanvas" width="220" height="220"></canvas>
-          <div class="muted-small mt-2">QR Code will appear here after registration.</div>
+          <canvas id="qrCanvas" width="220" height="220" class="hidden"></canvas>
         </div>
 
         <div class="info-row mt-3">

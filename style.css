@@ -165,6 +165,10 @@ body {
   border: 1px dashed rgba(0, 0, 0, 0.1);
 }
 
+#qrCanvas {
+  border-radius: 8px;
+}
+
 .info-row {
   display: flex;
   flex-direction: column;
@@ -291,4 +295,22 @@ legend {
   width: 1rem;
   height: 1rem;
   border-width: 0.2em;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent2);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent1);
 }
