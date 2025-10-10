@@ -94,14 +94,14 @@ const thaiSubs = {
 const intSubs = [
   'ESCAP - Economic and Social Commission for Asia and the Pacific',
   'FAO - Food and Agriculture Organization',
+  'FNF - Friedrich Naumann Foundation for Freedom',
+  'ILO - International Labour Organization',
+  'JICA - Japan International Cooperation Agency',
+  'NDI - National Democratic Institute',
   'UNDP - United Nations Development Programme',
   'UNEP - United Nations Environment Programme',
-  'UNIDO - United Nations Industrial Development Organization',
-  'ILO - International Labour Organization',
   'UN-HABITAT - United Nations Human Settlements Programme',
-  'FNF - Friedrich Naumann Foundation for Freedom',
-  'JICA - Japan International Cooperation Agency',
-  'NDI - National Democratic Institute'
+  'UNIDO - United Nations Industrial Development Organization',
 ];
 const embassySubs = [
   'Argentina',
