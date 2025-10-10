@@ -2,7 +2,7 @@
 // KPI Congress 27 - Registration Script
 // ========================================
 
-// Placeholder data
+// Organization data
 const thaiSubs = {
   kmth_sp: [
     'คณะกรรมาธิการการกฎหมาย การยุติธรรมและสิทธิมนุษยชน สภาผู้แทนราษฎร',
@@ -91,6 +91,7 @@ const thaiSubs = {
     'สำนักงานพระพุทธศาสนาแห่งชาติ'
   ]
 };
+
 const intSubs = [
   'ESCAP - Economic and Social Commission for Asia and the Pacific',
   'FAO - Food and Agriculture Organization',
@@ -103,6 +104,8 @@ const intSubs = [
   'UN-HABITAT - United Nations Human Settlements Programme',
   'UNIDO - United Nations Industrial Development Organization',
 ];
+
+
 const embassySubs = [
   'Argentina',
   'Australia',
@@ -237,6 +240,31 @@ function populateSubLists() {
 }
 
 // ========================================
+// Generate UID with organization type prefix
+// ========================================
+function generateUID(orgType) {
+  const timestamp = Date.now().toString(36).toUpperCase();
+  const random = Math.random().toString(36).slice(2, 7).toUpperCase();
+  
+  let prefix = '';
+  switch(orgType) {
+    case 'thai':
+      prefix = 'TH';
+      break;
+    case 'international':
+      prefix = 'INT';
+      break;
+    case 'embassy':
+      prefix = 'EMB';
+      break;
+    default:
+      prefix = 'KPI';
+  }
+  
+  return `${prefix}-${timestamp}-${random}`;
+}
+
+// ========================================
 // Organization type selection handler
 // ========================================
 document.querySelectorAll('input[name="mainOrgType"]').forEach((radio) => {
@@ -254,7 +282,6 @@ document.querySelectorAll('input[name="mainOrgType"]').forEach((radio) => {
     // Show relevant sections based on selection
     if (value === 'thai') {
       elements.thaiSub.classList.remove('hidden');
-      // Wait for Thai group selection to show morning/evening
     } else if (value === 'international') {
       elements.intSub.classList.remove('hidden');
       elements.morningBlock.classList.remove('hidden');
@@ -263,7 +290,6 @@ document.querySelectorAll('input[name="mainOrgType"]').forEach((radio) => {
       elements.embassySub.classList.remove('hidden');
       elements.morningBlock.classList.remove('hidden');
       elements.eveningBlock.classList.remove('hidden');
-      // Don't show spouse invite yet - wait for evening attendance confirmation
     }
 
     // Reset all conditional fields
@@ -380,15 +406,6 @@ function resetConditionalFields() {
 }
 
 // ========================================
-// Generate UID
-// ========================================
-function generateUID() {
-  const t = Date.now().toString(36).toUpperCase();
-  const r = Math.random().toString(36).slice(2, 7).toUpperCase();
-  return `KPI27-${t}-${r}`;
-}
-
-// ========================================
 // Show response message
 // ========================================
 function showResponse(text, type) {
@@ -450,7 +467,7 @@ function prepareFormData() {
   const mainOrgType = document.querySelector('input[name="mainOrgType"]:checked').value;
   
   return {
-    uid: generateUID(),
+    uid: generateUID(mainOrgType),
     mainOrgType: mainOrgType,
     thaiGroup: elements.thaiGroup.value || '',
     thaiSubDetail: elements.thaiSubDetail.value || '',
