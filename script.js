@@ -93,6 +93,7 @@ const thaiSubs = {
 };
 
 const intSubs = [
+  'AIPA - ASEAN Inter-Parliamentary Assembly',
   'ESCAP - Economic and Social Commission for Asia and the Pacific',
   'FAO - Food and Agriculture Organization',
   'FNF - Friedrich Naumann Foundation for Freedom',
