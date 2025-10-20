@@ -105,183 +105,198 @@
             </div>
           </fieldset>
 
-          <fieldset>
-            <legend class="h5">Participant Information / ข้อมูลผู้เข้าร่วม</legend>
-            <div class="row g-3">
-              <div class="col-md-3">
-                <label class="form-label">Title / คำนำหน้า</label>
-                <select id="prefix" class="form-control" required>
-                  <option value="">-- Select / เลือก --</option>
-                  <option>Mr. / นาย</option>
-                  <option>Mrs. / นาง</option>
-                  <option>Ms. / นางสาว</option>
-                  <option>H.E. / ท่าน</option>
-                  <option value="other">Other / อื่น ๆ</option>
-                </select>
-              </div>
-              <div class="col-md-3 hidden" id="prefixOtherBox">
-                <label class="form-label">Specify Title / ระบุคำนำหน้า</label>
-                <input id="prefixOther" class="form-control"  />
-              </div>
-              <div class="col-md-3">
-                <label class="form-label">First Name / ชื่อ</label>
-                <input id="firstname" class="form-control"  required />
-              </div>
-              <div class="col-md-3">
-                <label class="form-label">Last Name / นามสกุล</label>
-                <input id="lastname" class="form-control"  required />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Email / อีเมล</label>
-                <input id="email" type="email" class="form-control" required />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Telephone / เบอร์โทรศัพท์</label>
-                <input id="phone" type="tel" pattern="[0-9]{9,10}" class="form-control" required />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Position / ตำแหน่ง</label>
-                <input id="position" class="form-control"  required />
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Organization / หน่วยงาน</label>
-                <input id="organization" class="form-control"  required />
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Coordinator Name / ชื่อผู้ประสานงาน</label>
-                <input id="coordName" class="form-control"  />
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Coordinator Email / อีเมลผู้ประสานงาน</label>
-                <input id="coordEmail" type="email" class="form-control"  />
-              </div>
-              <div class="col-md-4">
-                <label class="form-label">Coordinator Phone / เบอร์โทรผู้ประสานงาน</label>
-                <input id="coordPhone" type="tel" class="form-control" />
-              </div>
-            </div>
-          </fieldset>
-
-          <div id="morningBlock" class="hidden">
-            <fieldset>
-              <legend class="h5">Morning Session (Parliament) / งานช่วงเช้า</legend>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label">Will you attend the morning session at Parliament? / สะดวกเข้าร่วมงานภาคเช้าที่รัฐสภาหรือไม่</label>
-                  <select id="attendMorning" class="form-control">
-                    <option value="">-- Select / เลือก --</option>
-                    <option value="yes">Yes / สะดวก</option>
-                    <option value="no">No / ไม่สะดวก</option>
-                  </select>
-                </div>
-                <div class="col-md-6 hidden" id="parkingBox">
-                  <label class="form-label">Do you need parking space? / ต้องการสำรองที่จอดรถหรือไม่</label>
-                  <select id="needParking" class="form-control">
-                    <option value="">-- Select / เลือก --</option>
-                    <option value="no">No / ไม่สำรอง</option>
-                    <option value="yes">Yes / สำรอง</option>
-                  </select>
-                </div>
-                <div class="col-md-6 hidden" id="carPlateBox">
-                  <label class="form-label">Car Plate Number / เลขทะเบียนรถ</label>
-                  <input id="carPlate" class="form-control" />
-                </div>
-              </div>
-            </fieldset>
-          </div>
-
-          <div id="eveningBlock" class="hidden">
-            <fieldset>
-              <legend class="h5">Annual Ambassador Ball at Banyan Tree Bangkok Hotel <br>งานเลี้ยงรับรอง	ณ โรงแรมบันยันทรี กรุงเทพ</legend>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label">Will you attend ? / สะดวกเข้าร่วมงานภาคเย็นที่โรงแรมหรือไม่</label>
-                  <select id="attendEvening" class="form-control">
-                    <option value="">-- Select / เลือก --</option>
-                    <option value="yes">Yes / สะดวก</option>
-                    <option value="no">No / ไม่สะดวก</option>
-                  </select>
-                </div>
-                <div class="col-md-6 hidden" id="foodBox">
-                  <label class="form-label">Food Preference / ประเภทอาหาร</label>
-                  <select id="foodType" class="form-control">
-                    <option value="">-- Select / เลือก --</option>
-                    <option value="regular">Normal / ปกติ</option>
-                    <option value="muslim">Halal / มุสลิม</option>
-                    <option value="veg">Vegetarian / มังสวิรัติ</option>
-                    <option value="je">Vegan / เจ</option>
-                  </select>
-                </div>
-                <div class="col-12 hidden" id="allergyBox">
-                  <label class="form-label">Food Allergies (if any) / การแพ้อาหาร (ถ้ามี)</label>
-                  <input id="foodAllergy" class="form-control"/>
-                </div>
-              </div>
-
-              <div id="spouseInvite" class="hidden mt-3">
+          <!-- Morning/Evening Sessions - Show immediately after org type -->
+          <div id="sessionSelection" class="hidden">
+            <div id="morningBlock">
+              <fieldset>
+                <legend class="h5">Morning Session (Parliament) / งานช่วงเช้า</legend>
                 <div class="row g-3">
                   <div class="col-md-6">
-                    <label class="form-label">Will you attend with spouse? / เข้าร่วมพร้อมคู่สมรสหรือไม่</label>
-                    <select id="withSpouse" class="form-control">
+                    <label class="form-label">Will you attend the morning session at Parliament? / สะดวกเข้าร่วมงานภาคเช้าที่รัฐสภาหรือไม่</label>
+                    <select id="attendMorning" class="form-control">
                       <option value="">-- Select / เลือก --</option>
-                      <option value="no">No / ไม่ใช่</option>
-                      <option value="yes">Yes / ใช่</option>
+                      <option value="yes">Yes / สะดวก</option>
+                      <option value="no">No / ไม่สะดวก</option>
                     </select>
                   </div>
-                  <div id="spouseFields" class="hidden col-12">
-                    <div class="row g-3">
-                      <div class="col-md-3">
-                        <label class="form-label">Title / คำนำหน้าคู่สมรส</label>
-                        <select id="spousePrefix" class="form-control">
-                          <option value="">-- Select / เลือก --</option>
-                          <option>Mr. / นาย</option>
-                          <option>Mrs. / นาง</option>
-                          <option>Ms. / นางสาว</option>
-                        </select>
-                      </div>
-                      <div class="col-md-3">
-                        <label class="form-label">First Name / ชื่อคู่สมรส</label>
-                        <input id="spouseFirst" class="form-control"/>
-                      </div>
-                      <div class="col-md-3">
-                        <label class="form-label">Last Name / นามสกุลคู่สมรส</label>
-                        <input id="spouseLast" class="form-control"  />
-                      </div>
-                      <div class="col-md-3">
-                        <label class="form-label">Food Preference / ประเภทอาหาร</label>
-                        <select id="spouseFood" class="form-control">
-                          <option value="">-- Select / เลือก --</option>
-                          <option value="regular">Normal / ปกติ</option>
-                          <option value="muslim">Halal / มุสลิม</option>
-                          <option value="veg">Vegetarian / มังสวิรัติ</option>
-                          <option value="je">Vegan / เจ</option>
-                        </select>
-                      </div>
-                      <div class="col-12">
-                        <label class="form-label">Spouse Food Allergies / การแพ้อาหารคู่สมรส (ถ้ามี)</label>
-                        <input id="spouseAllergy" class="form-control" />
+                  <div class="col-md-6 hidden" id="parkingBox">
+                    <label class="form-label">Do you need parking space? / ต้องการสำรองที่จอดรถหรือไม่</label>
+                    <select id="needParking" class="form-control">
+                      <option value="">-- Select / เลือก --</option>
+                      <option value="no">No / ไม่สำรอง</option>
+                      <option value="yes">Yes / สำรอง</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 hidden" id="carPlateBox">
+                    <label class="form-label">Car Plate Number / เลขทะเบียนรถ</label>
+                    <input id="carPlate" class="form-control" />
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+
+            <div id="eveningBlock">
+              <fieldset>
+                <legend class="h5">Annual Ambassador Ball at Banyan Tree Bangkok Hotel <br>งานเลี้ยงรับรอง	ณ โรงแรมบันยันทรี กรุงเทพ</legend>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Will you attend ? / สะดวกเข้าร่วมงานภาคเย็นที่โรงแรมหรือไม่</label>
+                    <select id="attendEvening" class="form-control">
+                      <option value="">-- Select / เลือก --</option>
+                      <option value="yes">Yes / สะดวก</option>
+                      <option value="no">No / ไม่สะดวก</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 hidden" id="foodBox">
+                    <label class="form-label">Food Preference / ประเภทอาหาร</label>
+                    <select id="foodType" class="form-control">
+                      <option value="">-- Select / เลือก --</option>
+                      <option value="regular">Normal / ปกติ</option>
+                      <option value="muslim">Halal / มุสลิม</option>
+                      <option value="veg">Vegetarian / มังสวิรัติ</option>
+                      <option value="je">Vegan / เจ</option>
+                    </select>
+                  </div>
+                  <div class="col-12 hidden" id="allergyBox">
+                    <label class="form-label">Food Allergies (if any) / การแพ้อาหาร (ถ้ามี)</label>
+                    <input id="foodAllergy" class="form-control"/>
+                  </div>
+                </div>
+
+                <div id="spouseInvite" class="hidden mt-3">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label">Will you attend with spouse? / เข้าร่วมพร้อมคู่สมรสหรือไม่</label>
+                      <select id="withSpouse" class="form-control">
+                        <option value="">-- Select / เลือก --</option>
+                        <option value="no">No / ไม่ใช่</option>
+                        <option value="yes">Yes / ใช่</option>
+                      </select>
+                    </div>
+                    <div id="spouseFields" class="hidden col-12">
+                      <div class="row g-3">
+                        <div class="col-md-3">
+                          <label class="form-label">Title / คำนำหน้าคู่สมรส</label>
+                          <select id="spousePrefix" class="form-control">
+                            <option value="">-- Select / เลือก --</option>
+                            <option>Mr. / นาย</option>
+                            <option>Mrs. / นาง</option>
+                            <option>Ms. / นางสาว</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">First Name / ชื่อคู่สมรส</label>
+                          <input id="spouseFirst" class="form-control"/>
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Last Name / นามสกุลคู่สมรส</label>
+                          <input id="spouseLast" class="form-control"  />
+                        </div>
+                        <div class="col-md-3">
+                          <label class="form-label">Food Preference / ประเภทอาหาร</label>
+                          <select id="spouseFood" class="form-control">
+                            <option value="">-- Select / เลือก --</option>
+                            <option value="regular">Normal / ปกติ</option>
+                            <option value="muslim">Halal / มุสลิม</option>
+                            <option value="veg">Vegetarian / มังสวิรัติ</option>
+                            <option value="je">Vegan / เจ</option>
+                          </select>
+                        </div>
+                        <div class="col-12">
+                          <label class="form-label">Spouse Food Allergies / การแพ้อาหารคู่สมรส (ถ้ามี)</label>
+                          <input id="spouseAllergy" class="form-control" />
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-            </fieldset>
+              </fieldset>
+            </div>
           </div>
 
-          <div class="pdpa-box mt-4">
-            <input type="checkbox" id="pdpaConsent" required />
-            <label for="pdpaConsent">
-              I have read and agree with the
-              <a href="https://kpi.ac.th/wp-content/uploads/2025/09/pdpa.html" target="_blank">
-                PDPA Policy <span class="text-muted">(นโยบายคุ้มครองข้อมูลส่วนบุคคล)</span>
-              </a>
-            </label>
+          <!-- Message for not attending any session -->
+          <div id="notAttendingMessage" class="hidden">
+            <div class="alert alert-info">
+              <h5>📋 ขอบคุณที่ให้ข้อมูล / Thank you for your information</h5>
+              <p class="mb-0">คุณเลือกไม่เข้าร่วมงานทั้งสองช่วง กรุณากดปุ่ม "Submit" ด้านล่างเพื่อส่งข้อมูล<br>
+              You have chosen not to attend both sessions. Please click "Submit" below to send your response.</p>
+            </div>
+          </div>
+
+          <!-- Participant Information - Show only if attending at least one session -->
+          <div id="participantBlock" class="hidden">
+            <fieldset>
+              <legend class="h5">Participant Information / ข้อมูลผู้เข้าร่วม</legend>
+              <div class="row g-3">
+                <div class="col-md-3">
+                  <label class="form-label">Title / คำนำหน้า</label>
+                  <select id="prefix" class="form-control">
+                    <option value="">-- Select / เลือก --</option>
+                    <option>Mr. / นาย</option>
+                    <option>Mrs. / นาง</option>
+                    <option>Ms. / นางสาว</option>
+                    <option>H.E. / ท่าน</option>
+                    <option value="other">Other / อื่น ๆ</option>
+                  </select>
+                </div>
+                <div class="col-md-3 hidden" id="prefixOtherBox">
+                  <label class="form-label">Specify Title / ระบุคำนำหน้า</label>
+                  <input id="prefixOther" class="form-control"  />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">First Name / ชื่อ</label>
+                  <input id="firstname" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Last Name / นามสกุล</label>
+                  <input id="lastname" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email / อีเมล</label>
+                  <input id="email" type="email" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Telephone / เบอร์โทรศัพท์</label>
+                  <input id="phone" type="tel" pattern="[0-9]{9,10}" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Position / ตำแหน่ง</label>
+                  <input id="position" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Organization / หน่วยงาน</label>
+                  <input id="organization" class="form-control" />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Coordinator Name / ชื่อผู้ประสานงาน</label>
+                  <input id="coordName" class="form-control"  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Coordinator Email / อีเมลผู้ประสานงาน</label>
+                  <input id="coordEmail" type="email" class="form-control"  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Coordinator Phone / เบอร์โทรผู้ประสานงาน</label>
+                  <input id="coordPhone" type="tel" class="form-control" />
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="pdpa-box mt-4">
+              <input type="checkbox" id="pdpaConsent" />
+              <label for="pdpaConsent">
+                I have read and agree with the
+                <a href="https://kpi.ac.th/wp-content/uploads/2025/09/pdpa.html" target="_blank">
+                  PDPA Policy <span class="text-muted">(นโยบายคุ้มครองข้อมูลส่วนบุคคล)</span>
+                </a>
+              </label>
+            </div>
           </div>
 
           <div class="d-flex align-items-center gap-3 mt-4">
-            <button type="submit" class="btn btn-submit">Register & Get QR / ลงทะเบียนและรับ QR</button>
-            <div class="muted-small">or scan on-site with UID / หรือสแกนหน้างานด้วย UID</div>
+            <button type="submit" class="btn btn-submit" id="submitBtn">Submit / ส่งข้อมูล</button>
+            <div class="muted-small" id="qrHint">กรอกข้อมูลเพื่อรับ QR Code</div>
           </div>
 
           <div id="responseMessage" class="alert mt-3 hidden" role="alert"></div>
@@ -303,6 +318,9 @@
 
         <div class="qr-box" id="qrArea">
           <canvas id="qrCanvas" width="220" height="220" class="hidden"></canvas>
+          <div id="qrPlaceholder" class="text-center text-muted">
+            <p>QR Code will appear here<br>after registration</p>
+          </div>
         </div>
 
         <div class="info-row mt-3">
