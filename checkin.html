@@ -1,100 +1,413 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QR Check-in หน้างาน</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>KPI Congress 27 – Check-in System</title>
+  
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  
+  <!-- QR Scanner Library -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  
   <style>
+    :root {
+      --primary: #4285f4;
+      --success: #34a853;
+      --danger: #ea4335;
+      --warning: #fbbc04;
+    }
+    
     body {
-      background: #f8f9fa;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Kanit', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
     }
+    
     .container {
-      max-width: 600px;
-      margin: 3rem auto;
-      padding: 2rem;
-      background: #fff;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .card {
+      background: white;
       border-radius: 20px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
     }
-    h2 {
+    
+    .card-header {
+      background: linear-gradient(135deg, var(--primary), #667eea);
+      color: white;
+      padding: 30px;
       text-align: center;
-      margin-bottom: 1.5rem;
-      font-weight: 600;
-      color: #2c3e50;
     }
+    
+    .card-header h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    
+    .card-header p {
+      margin: 10px 0 0 0;
+      opacity: 0.9;
+      font-size: 16px;
+    }
+    
+    .card-body {
+      padding: 30px;
+    }
+    
     #reader {
-      width: 100%;
       border-radius: 15px;
       overflow: hidden;
-      margin-bottom: 1rem;
+      margin-bottom: 20px;
     }
-    #statusMessage {
-      font-size: 1.1rem;
-      font-weight: 500;
-      text-align: center;
-      padding: 1rem;
+    
+    .result-container {
+      display: none;
+      padding: 25px;
+      border-radius: 15px;
+      margin-top: 20px;
+    }
+    
+    .result-container.success {
+      display: block;
+      background: #d1fae5;
+      border: 2px solid var(--success);
+    }
+    
+    .result-container.error {
+      display: block;
+      background: #fee2e2;
+      border: 2px solid var(--danger);
+    }
+    
+    .result-container h3 {
+      margin: 0 0 15px 0;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    
+    .result-container.success h3 {
+      color: var(--success);
+    }
+    
+    .result-container.error h3 {
+      color: var(--danger);
+    }
+    
+    .info-item {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    .info-item:last-child {
+      border-bottom: none;
+    }
+    
+    .info-label {
+      font-weight: 600;
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .info-value {
+      font-size: 16px;
+      color: #222;
+      margin-top: 5px;
+    }
+    
+    .btn-scan-again {
+      margin-top: 20px;
+      width: 100%;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: 600;
       border-radius: 10px;
+      border: none;
+      background: var(--primary);
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-scan-again:hover {
+      background: #3367d6;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(66, 133, 244, 0.3);
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 15px;
+    }
+    
+    .stat-item {
+      text-align: center;
+      padding: 15px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: #666;
+      margin-top: 5px;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+    }
+    
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 15px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>📷 QR Code Check-in</h2>
-    <div id="reader"></div>
-    <div id="statusMessage" class="bg-light">กรุณาสแกน QR Code</div>
+    <div class="card">
+      <div class="card-header">
+        <h1>🎟️ KPI Congress 27</h1>
+        <p>Check-in System / ระบบเช็คอิน</p>
+      </div>
+      
+      <div class="card-body">
+        <!-- QR Scanner -->
+        <div id="reader"></div>
+        
+        <!-- Loading -->
+        <div id="loading" class="loading" style="display: none;">
+          <div class="spinner"></div>
+          <p>กำลังตรวจสอบ... / Verifying...</p>
+        </div>
+        
+        <!-- Success Result -->
+        <div id="successResult" class="result-container success">
+          <h3>✅ Check-in สำเร็จ!</h3>
+          <div class="info-item">
+            <div class="info-label">UID</div>
+            <div class="info-value" id="resultUID">-</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">ชื่อ-นามสกุล / Name</div>
+            <div class="info-value" id="resultName">-</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">อีเมล / Email</div>
+            <div class="info-value" id="resultEmail">-</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">หน่วยงาน / Organization</div>
+            <div class="info-value" id="resultOrg">-</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">เวลา Check-in / Timestamp</div>
+            <div class="info-value" id="resultTime">-</div>
+          </div>
+          <button class="btn-scan-again" onclick="scanAgain()">Scan Next / สแกนคนต่อไป</button>
+        </div>
+        
+        <!-- Error Result -->
+        <div id="errorResult" class="result-container error">
+          <h3>❌ เกิดข้อผิดพลาด</h3>
+          <p id="errorMessage">-</p>
+          <button class="btn-scan-again" onclick="scanAgain()">Try Again / ลองใหม่</button>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats">
+          <div class="stat-item">
+            <div class="stat-value" id="totalCheckedIn">0</div>
+            <div class="stat-label">Check-in แล้ว</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="totalScanned">0</div>
+            <div class="stat-label">สแกนทั้งหมด</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
-    const backendUrl =
-      "https://script.google.com/macros/s/AKfycbxTb5Qiba2-9zERJ58yug1w64bwk8fj2EFaXq0m9r-v-nPrxCnLVbuwFWS2jzT4BUvsnQ/exec"; // เปลี่ยนเป็น Web App ของคุณ
-    const statusMessage = document.getElementById("statusMessage");
-
-    // ฟังก์ชันส่ง UID ไปตรวจสอบที่ Backend
-    function sendUIDToBackend(uid) {
-      statusMessage.textContent = "⏳ กำลังตรวจสอบ UID...";
-      statusMessage.className = "bg-warning text-dark";
-
-      fetch(backendUrl + "?uid=" + encodeURIComponent(uid))
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.success) {
-            statusMessage.innerHTML = `✅ <b>${data.fullname}</b> เช็คอินเรียบร้อย`;
-            statusMessage.className = "bg-success text-white";
-          } else {
-            statusMessage.innerHTML = `❌ ${data.message}`;
-            statusMessage.className = "bg-danger text-white";
-          }
-        })
-        .catch((err) => {
-          statusMessage.innerHTML = "⚠️ เกิดข้อผิดพลาด: " + err;
-          statusMessage.className = "bg-danger text-white";
-        });
+    // Configuration
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxTb5Qiba2-9zERJ58yug1w64bwk8fj2EFaXq0m9r-v-nPrxCnLVbuwFWS2jzT4BUvsnQ/exec'; // ⚠️ แก้ URL ตรงนี้
+    
+    // Stats
+    let totalScanned = 0;
+    let totalCheckedIn = 0;
+    
+    // QR Scanner
+    let html5QrCode;
+    let isProcessing = false;
+    
+    // Initialize scanner
+    function initScanner() {
+      html5QrCode = new Html5Qrcode("reader");
+      
+      const config = {
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+        aspectRatio: 1.0
+      };
+      
+      html5QrCode.start(
+        { facingMode: "environment" },
+        config,
+        onScanSuccess,
+        onScanError
+      ).catch(err => {
+        console.error("Failed to start scanner:", err);
+        showError("ไม่สามารถเปิดกล้องได้ กรุณาอนุญาตการใช้งานกล้อง");
+      });
     }
-
-    // เริ่มต้น QR Scanner
-    function startScanner() {
-      const html5QrCode = new Html5Qrcode("reader");
-      const config = { fps: 10, qrbox: 250 };
-
-      html5QrCode
-        .start({ facingMode: "environment" }, config, (decodedText) => {
-          html5QrCode.stop().then(() => {
-            sendUIDToBackend(decodedText);
-            setTimeout(() => startScanner(), 2000); // สแกนต่ออัตโนมัติหลัง 2 วิ
-          });
-        })
-        .catch((err) => {
-          statusMessage.textContent =
-            "⚠️ ไม่สามารถเข้าถึงกล้องได้ กรุณาใช้ HTTPS หรืออนุญาตสิทธิ์กล้อง";
-          statusMessage.className = "bg-danger text-white";
-          console.error(err);
+    
+    // Handle successful scan
+    async function onScanSuccess(decodedText, decodedResult) {
+      if (isProcessing) return;
+      
+      isProcessing = true;
+      totalScanned++;
+      updateStats();
+      
+      // Stop scanner
+      html5QrCode.pause();
+      
+      // Show loading
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('successResult').style.display = 'none';
+      document.getElementById('errorResult').style.display = 'none';
+      
+      try {
+        // Parse QR data
+        const qrData = JSON.parse(decodedText);
+        const uid = qrData.uid;
+        
+        if (!uid) {
+          throw new Error('Invalid QR Code: No UID found');
+        }
+        
+        // Call backend to check-in
+        const response = await fetch(SCRIPT_URL + '?action=checkin&uid=' + encodeURIComponent(uid), {
+          method: 'GET'
         });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          // Success
+          totalCheckedIn++;
+          updateStats();
+          showSuccess(result);
+        } else {
+          // Error
+          throw new Error(result.error || 'Check-in failed');
+        }
+        
+      } catch (error) {
+        console.error('Check-in error:', error);
+        showError(error.message || 'เกิดข้อผิดพลาดในการเช็คอิน');
+      } finally {
+        document.getElementById('loading').style.display = 'none';
+        isProcessing = false;
+      }
     }
-
-    startScanner();
+    
+    // Handle scan error (ignore frequent errors)
+    function onScanError(error) {
+      // Ignore common errors
+    }
+    
+    // Show success result
+    function showSuccess(data) {
+      document.getElementById('resultUID').textContent = data.uid;
+      document.getElementById('resultName').textContent = data.name;
+      document.getElementById('resultEmail').textContent = data.email;
+      document.getElementById('resultOrg').textContent = data.organization;
+      document.getElementById('resultTime').textContent = new Date(data.timestamp).toLocaleString('th-TH');
+      
+      document.getElementById('successResult').style.display = 'block';
+      document.getElementById('errorResult').style.display = 'none';
+      
+      // Play success sound (optional)
+      playSound('success');
+    }
+    
+    // Show error result
+    function showError(message) {
+      document.getElementById('errorMessage').textContent = message;
+      document.getElementById('successResult').style.display = 'none';
+      document.getElementById('errorResult').style.display = 'block';
+      
+      // Play error sound (optional)
+      playSound('error');
+    }
+    
+    // Scan again
+    function scanAgain() {
+      document.getElementById('successResult').style.display = 'none';
+      document.getElementById('errorResult').style.display = 'none';
+      html5QrCode.resume();
+    }
+    
+    // Update stats
+    function updateStats() {
+      document.getElementById('totalScanned').textContent = totalScanned;
+      document.getElementById('totalCheckedIn').textContent = totalCheckedIn;
+    }
+    
+    // Play sound
+    function playSound(type) {
+      try {
+        const audio = new Audio();
+        if (type === 'success') {
+          // Success beep
+          audio.src = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjOS1vLPeSsFI3fH8N6PQwoTXrTp7alUFApGnuDyvWwgBjOR1/LPeiwGI3jH8N6PQwoTXrTp7alUFApGnuDyu2sgBjSR1/LQeiwGJHjH8N+PQwoTXrTp7KlUFApGnuDyu2sgBjSR1/LQeiwGJHjH8N+PQwoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2wh';
+        } else {
+          // Error beep
+          audio.src = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBjOS1vLPeSsFI3fH8N6PQwoTXrTp7alUFApGnuDyvWwgBjOR1/LPeiwGI3jH8N6PQwoTXrTp7alUFApGnuDyu2sgBjSR1/LQeiwGJHjH8N+PQwoTXrTp7KlUFApGnuDyu2sgBjSR1/LQeiwGJHjH8N+PQwoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2whBjSR1/LQeiwGJHjH8N+PQgoTXrTp7KlVEwpGnuDyu2wh';
+        }
+        audio.play().catch(() => {}); // Ignore if sound fails
+      } catch (e) {}
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      initScanner();
+    });
   </script>
 </body>
 </html>
