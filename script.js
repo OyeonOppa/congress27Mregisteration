@@ -180,6 +180,7 @@ const embassySubs = [
   'Maldives',
   'Order of Malta',
   'Mexico',
+  'Moldova',
   'Mongolia',
   'Morocco',
   'Myanmar',
