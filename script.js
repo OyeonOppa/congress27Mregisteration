@@ -129,6 +129,7 @@ const intSubs = [
   'UNEP - United Nations Environment Programme',
   'UN-HABITAT - United Nations Human Settlements Programme',
   'UNIDO - United Nations Industrial Development Organization',
+  'WFD - Westminster Foundation for Democracy'
 ];
 
 const embassySubs = [
