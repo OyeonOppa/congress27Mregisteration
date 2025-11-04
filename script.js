@@ -114,6 +114,7 @@ const thaiSubs = {
     'สำนักงานพระพุทธศาสนาแห่งชาติ',
     'สำนักงานอัยการสูงสุด',
     'สำนักนายกรัฐมนตรี',
+    'หน่วยงานอื่น ๆ'
   ]
 };
 
@@ -223,6 +224,8 @@ const elements = {
   thaiGroup: document.getElementById('thaiGroup'),
   thaiGroupDetail: document.getElementById('thaiGroupDetail'),
   thaiSubDetail: document.getElementById('thaiSubDetail'),
+  customThaiOrgBox: document.getElementById('customThaiOrgBox'),
+  customThaiOrg: document.getElementById('customThaiOrg'),
   intSubDetail: document.getElementById('intSubDetail'),
   embassySubDetail: document.getElementById('embassySubDetail'),
   sessionSelection: document.getElementById('sessionSelection'),
@@ -400,6 +403,7 @@ elements.thaiGroup.addEventListener('change', function () {
   elements.eveningBlock.classList.add('hidden');
   elements.participantBlock.classList.add('hidden');
   elements.notAttendingMessage.classList.add('hidden');
+  elements.customThaiOrgBox.classList.add('hidden');
 
   if (v === 'kmth_sp' || v === 'kmth_sw') {
     elements.sessionSelection.classList.remove('hidden');
@@ -408,6 +412,22 @@ elements.thaiGroup.addEventListener('change', function () {
   } else if (v === 'thai_other') {
     elements.sessionSelection.classList.remove('hidden');
     elements.eveningBlock.classList.remove('hidden');
+  }
+});
+
+// ========================================
+// Thai sub-detail selection handler (for custom organization)
+// ========================================
+elements.thaiSubDetail.addEventListener('change', function () {
+  const selectedValue = this.value;
+  
+  if (selectedValue === 'หน่วยงานอื่น ๆ') {
+    elements.customThaiOrgBox.classList.remove('hidden');
+    elements.customThaiOrg.setAttribute('required', 'required');
+  } else {
+    elements.customThaiOrgBox.classList.add('hidden');
+    elements.customThaiOrg.removeAttribute('required');
+    elements.customThaiOrg.value = '';
   }
 });
 
@@ -489,12 +509,14 @@ function resetConditionalFields() {
   document.getElementById('foodType').value = '';
   document.getElementById('foodAllergy').value = '';
   elements.withSpouse.value = '';
+  elements.customThaiOrg.value = '';
 
   elements.parkingBox.classList.add('hidden');
   elements.carPlateBox.classList.add('hidden');
   elements.foodBox.classList.add('hidden');
   elements.allergyBox.classList.add('hidden');
   elements.spouseFields.classList.add('hidden');
+  elements.customThaiOrgBox.classList.add('hidden');
 }
 
 // ========================================
@@ -619,11 +641,15 @@ function prepareFormData() {
   const eveningValue = elements.attendEvening.value;
   const attendingAny = morningValue === 'yes' || eveningValue === 'yes';
   
+  // ถ้าเลือก "หน่วยงานอื่น ๆ" และกรอกข้อมูลเอง ให้ใช้ค่าที่กรอก
+  const customOrg = elements.customThaiOrg.value.trim();
+  const finalThaiSubDetail = customOrg || elements.thaiSubDetail.value || '';
+  
   return {
     uid: attendingAny ? generateUID(mainOrgType) : '',
     mainOrgType: mainOrgType,
     thaiGroup: elements.thaiGroup.value || '',
-    thaiSubDetail: elements.thaiSubDetail.value || '',
+    thaiSubDetail: finalThaiSubDetail,
     intSubDetail: elements.intSubDetail.value || '',
     embassySubDetail: elements.embassySubDetail.value || '',
     attendMorning: morningValue || '',
