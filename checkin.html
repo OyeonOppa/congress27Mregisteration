@@ -295,56 +295,68 @@
       });
     }
     
-    // Handle successful scan
-    async function onScanSuccess(decodedText, decodedResult) {
-      if (isProcessing) return;
+async function onScanSuccess(decodedText, decodedResult) {
+  if (isProcessing) return;
+  
+  isProcessing = true;
+  totalScanned++;
+  updateStats();
+  
+  // Stop scanner
+  html5QrCode.pause();
+  
+  // Show loading
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('successResult').style.display = 'none';
+  document.getElementById('errorResult').style.display = 'none';
+  
+  try {
+    let uid;
+    
+    // ✅ แก้ไขตรงนี้: ตรวจสอบว่าเป็น JSON หรือ string ธรรมดา
+    try {
+      // พยายาม parse เป็น JSON ก่อน
+      const qrData = JSON.parse(decodedText);
+      uid = qrData.uid;
       
-      isProcessing = true;
-      totalScanned++;
-      updateStats();
-      
-      // Stop scanner
-      html5QrCode.pause();
-      
-      // Show loading
-      document.getElementById('loading').style.display = 'block';
-      document.getElementById('successResult').style.display = 'none';
-      document.getElementById('errorResult').style.display = 'none';
-      
-      try {
-        // Parse QR data
-        const qrData = JSON.parse(decodedText);
-        const uid = qrData.uid;
-        
-        if (!uid) {
-          throw new Error('Invalid QR Code: No UID found');
-        }
-        
-        // Call backend to check-in
-        const response = await fetch(SCRIPT_URL + '?action=checkin&uid=' + encodeURIComponent(uid), {
-          method: 'GET'
-        });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-          // Success
-          totalCheckedIn++;
-          updateStats();
-          showSuccess(result);
-        } else {
-          // Error
-          throw new Error(result.error || 'Check-in failed');
-        }
-        
-      } catch (error) {
-        console.error('Check-in error:', error);
-        showError(error.message || 'เกิดข้อผิดพลาดในการเช็คอิน');
-      } finally {
-        document.getElementById('loading').style.display = 'none';
-        isProcessing = false;
+      if (!uid) {
+        throw new Error('Invalid QR Code: No UID found in JSON');
+      }
+    } catch (parseError) {
+      // ถ้า parse ไม่ได้ แสดงว่าเป็น string ธรรมดา (แค่ UID)
+      // ตรวจสอบว่าเป็นรูปแบบ UID ที่ถูกต้อง (เริ่มต้นด้วย TH-, INT-, EMB-, หรือ KPI-)
+      if (decodedText.match(/^(TH|INT|EMB|KPI)-/)) {
+        uid = decodedText;
+      } else {
+        throw new Error('Invalid QR Code format');
       }
     }
+    
+    // Call backend to check-in
+    const response = await fetch(SCRIPT_URL + '?action=checkin&uid=' + encodeURIComponent(uid), {
+      method: 'GET'
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      // Success
+      totalCheckedIn++;
+      updateStats();
+      showSuccess(result);
+    } else {
+      // Error
+      throw new Error(result.error || 'Check-in failed');
+    }
+    
+  } catch (error) {
+    console.error('Check-in error:', error);
+    showError(error.message || 'เกิดข้อผิดพลาดในการเช็คอิน');
+  } finally {
+    document.getElementById('loading').style.display = 'none';
+    isProcessing = false;
+  }
+}
     
     // Handle scan error (ignore frequent errors)
     function onScanError(error) {
@@ -410,4 +422,5 @@
     });
   </script>
 </body>
+
 </html>
